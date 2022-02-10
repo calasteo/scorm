@@ -70,6 +70,7 @@ const RenderIFrame = () => {
     window.ReactNativeWebView.postMessage(x)
     x.on("LMSInitialize", function () {
         x.LMSSetValue("cmi.core.lesson_status", "not attempted")
+        alert("INIT")
         // window.ReactNativeWebView.postMessage("init LMS")
     });
 
