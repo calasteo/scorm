@@ -62,25 +62,17 @@ if (named === "1.2") {
 }
 
 const RenderIFrame = () => {
-    const [cmi,setCmi] = useState({})
-    useEffect(()=>{
-        window.ReactNativeWebView.postMessage(cmi)
-    },[cmi])
-    setCmi({init:false})
     x.on("LMSInitialize", function () {
         
         const customEvent = new CustomEvent('postToLMS', { detail: { name: 'primary' } });
         document.dispatchEvent(customEvent);
 
         x.LMSSetValue("cmi.core.lesson_status", "not attempted")
-        setCmi({init:true})
     });
 
     x.on("LMSSetValue.cmi.*", function(CMIElement, value) {
         // window.ReactNativeWebView.postMessage("LMS set value for ",CMIElement)
         // window.ReactNativeWebView.postMessage("value : ",value)
-        let data = x.LMSGetValue('cmi')
-        setCmi({init:true,cmi:data})
     });
 
     x.on("LMSFinish", function () {
