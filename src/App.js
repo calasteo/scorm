@@ -62,97 +62,102 @@ if (named === "1.2") {
 }
 
 const RenderIFrame = () => {
+    const[cmi,setCMI] = useState({})
+    useEffect(()=>{
+        alert(cmi)
+        window.ReactNativeWebView.postMessage(cmi)
+    },[x,cmi])
     x.on("LMSInitialize", function () {
-        
         const customEvent = new CustomEvent('postToLMS', { detail: { name: 'primary' } });
         document.dispatchEvent(customEvent);
-
         x.LMSSetValue("cmi.core.lesson_status", "not attempted")
+        x.LMSSetValue("cmi.core.student_id", "12313")
+        x.LMSSetValue("cmi.core.student_name", "AdminPRU")
     });
-
     x.on("LMSSetValue.cmi.*", function(CMIElement, value) {
         // window.ReactNativeWebView.postMessage("LMS set value for ",CMIElement)
         // window.ReactNativeWebView.postMessage("value : ",value)
     });
-
     x.on("LMSFinish", function () {
-       const status =x.LMSGetValue("cmi.core.lesson_status")
+        const status =x.LMSGetValue("cmi.core.lesson_status")
         if (status === "incomplete") {
             // x.LMSSetValue("cmi.core.lesson_status", "completed")
         }
-        // let data = x.LMSGetValue('cmi')
+
+        let data = x.LMSGetValue('cmi').toJSON()
+        setCMI(data)
         // axios.post(lmsCommitUrl, {cmi: data}).then(res => {
         //     console.log(res.data)
         // });
     });
+
+
 
     return (
         <iframe name={ scormType } style={ {height: "100%", width: "100%"} } src={ url } frameBorder="0" title="scorm"/>
     )
 }
 
-const RenderUser = ({user, setUser}) => {
-    const [name, setName] = useState("AdminPru")
-    const [id, setId] = useState("Xasdfd2sagfF")
-
-    function submitForm(e) {
-        let errors = []
-        if (id === "") {
-            errors.push("ID wajib diisi")
-        }
-        if (name === "") {
-            errors.push("Name wajib diisi")
-        }
-        if (errors.length > 0) {
-            alert(errors.join(" | "))
-            return
-        }
-        setUser({id, name})
-        if (scormType === "API") {
-            x.cmi.core.student_id = id
-            x.cmi.core.student_name = name
-        } else {
-            x.cmi.learner_id = id
-            x.cmi.student_name = name
-        }
-
-
-    }
-
-    return (
-        <div className="form-user-karis">
-            <div className="form-group">
-                <label htmlFor="id">ID</label>
-                <input type="text" name={ 'id' } id={ 'id' } value={ id } onChange={ (e) => setId(e.value) }/>
-            </div>
-            <div className="form-group">
-                <label htmlFor="name">Name</label>
-                <input type="text" name={ 'name' } id={ 'name' } value={ name } onChange={ (e) => setName(e.value) }/>
-            </div>
-            <div className="form-group end">
-                <button onClick={ () => submitForm() }>Submit</button>
-            </div>
-        </div>
-    )
-}
+// const RenderUser = ({user, setUser}) => {
+//     const [name, setName] = useState("AdminPru")
+//     const [id, setId] = useState("Xasdfd2sagfF")
+//
+//     function submitForm(e) {
+//         let errors = []
+//         if (id === "") {
+//             errors.push("ID wajib diisi")
+//         }
+//         if (name === "") {
+//             errors.push("Name wajib diisi")
+//         }
+//         if (errors.length > 0) {
+//             alert(errors.join(" | "))
+//             return
+//         }
+//         setUser({id, name})
+//         if (scormType === "API") {
+//             x.cmi.core.student_id = id
+//             x.cmi.core.student_name = name
+//         } else {
+//             x.cmi.learner_id = id
+//             x.cmi.student_name = name
+//         }
+//
+//
+//     }
+//
+//     return (
+//         <div className="form-user-karis">
+//             <div className="form-group">
+//                 <label htmlFor="id">ID</label>
+//                 <input type="text" name={ 'id' } id={ 'id' } value={ id } onChange={ (e) => setId(e.value) }/>
+//             </div>
+//             <div className="form-group">
+//                 <label htmlFor="name">Name</label>
+//                 <input type="text" name={ 'name' } id={ 'name' } value={ name } onChange={ (e) => setName(e.value) }/>
+//             </div>
+//             <div className="form-group end">
+//                 <button onClick={ () => submitForm() }>Submit</button>
+//             </div>
+//         </div>
+//     )
+// }
 
 function App() {
-    const [user, setUser] = useState(null)
-    useEffect(() => {
-        // const event = new Event('build')
-        document.addEventListener("postToLMS", (data) => {
-            window.ReactNativeWebView?.postMessage(data)  
-        })
-        return () => {
-            document.removeEventListener("postToLMS")
-        }
-    }, [])
+    // const [user, setUser] = useState(null)
+    // useEffect(() => {
+    //     // const event = new Event('build')
+    //     document.addEventListener("postToLMS", (data) => {
+    //         window.ReactNativeWebView?.postMessage(data)
+    //     })
+    //     return () => {
+    //         document.removeEventListener("postToLMS")
+    //     }
+    // }, [])
     return (
         <div className="App">
             {
-                user == null ?
-                    <RenderUser user={ user } setUser={ setUser }/>
-                    : <RenderIFrame/>
+               <RenderIFrame/>
             }
         </div>
     );
