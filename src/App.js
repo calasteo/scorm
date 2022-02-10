@@ -133,34 +133,34 @@ const RenderIFrame = ({ userCourseData }) => {
 //     }
 //   }
 
-  return (
-    <div className="form-user-karis">
-      <div className="form-group">
-        <label htmlFor="id">ID</label>
-        <input
-          type="text"
-          name={"id"}
-          id={"id"}
-          value={id}
-          onChange={(e) => setId(e.value)}
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="name">Name</label>
-        <input
-          type="text"
-          name={"name"}
-          id={"name"}
-          value={name}
-          onChange={(e) => setName(e.value)}
-        />
-      </div>
-      <div className="form-group end">
-        <button onClick={() => submitForm()}>Submit</button>
-      </div>
-    </div>
-  );
-};
+//   return (
+//     <div className="form-user-karis">
+//       <div className="form-group">
+//         <label htmlFor="id">ID</label>
+//         <input
+//           type="text"
+//           name={"id"}
+//           id={"id"}
+//           value={id}
+//           onChange={(e) => setId(e.value)}
+//         />
+//       </div>
+//       <div className="form-group">
+//         <label htmlFor="name">Name</label>
+//         <input
+//           type="text"
+//           name={"name"}
+//           id={"name"}
+//           value={name}
+//           onChange={(e) => setName(e.value)}
+//         />
+//       </div>
+//       <div className="form-group end">
+//         <button onClick={() => submitForm()}>Submit</button>
+//       </div>
+//     </div>
+//   );
+// };
 
 // const scormHandler = (data) => {
 //   window.ReactNativeWebView?.postMessage("LMS INITIALIZE JANCOOOK");
