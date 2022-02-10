@@ -95,7 +95,7 @@ const RenderIFrame = ({ userCourseData }) => {
 
   return (
     <>
-      <h1>{user}</h1>
+      <h1>{token}</h1>
       <iframe
         name={scormType}
         style={{ height: "100%", width: "100%" }}
@@ -106,61 +106,6 @@ const RenderIFrame = ({ userCourseData }) => {
     </>
   );
 };
-
-// const RenderUser = ({ user, setUser }) => {
-//   const [name, setName] = useState("AdminPru");
-//   const [id, setId] = useState("Xasdfd2sagfF");
-
-//   function submitForm(e) {
-//     let errors = [];
-//     if (id === "") {
-//       errors.push("ID wajib diisi");
-//     }
-//     if (name === "") {
-//       errors.push("Name wajib diisi");
-//     }
-//     if (errors.length > 0) {
-//       alert(errors.join(" | "));
-//       return;
-//     }
-//     setUser({ id, name });
-//     if (scormType === "API") {
-//       x.cmi.core.student_id = id;
-//       x.cmi.core.student_name = name;
-//     } else {
-//       x.cmi.learner_id = id;
-//       x.cmi.student_name = name;
-//     }
-//   }
-
-//   return (
-//     <div className="form-user-karis">
-//       <div className="form-group">
-//         <label htmlFor="id">ID</label>
-//         <input
-//           type="text"
-//           name={"id"}
-//           id={"id"}
-//           value={id}
-//           onChange={(e) => setId(e.value)}
-//         />
-//       </div>
-//       <div className="form-group">
-//         <label htmlFor="name">Name</label>
-//         <input
-//           type="text"
-//           name={"name"}
-//           id={"name"}
-//           value={name}
-//           onChange={(e) => setName(e.value)}
-//         />
-//       </div>
-//       <div className="form-group end">
-//         <button onClick={() => submitForm()}>Submit</button>
-//       </div>
-//     </div>
-//   );
-// };
 
 // const scormHandler = (data) => {
 //   window.ReactNativeWebView?.postMessage("LMS INITIALIZE JANCOOOK");
