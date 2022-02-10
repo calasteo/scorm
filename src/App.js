@@ -41,7 +41,8 @@ if (manifest.length > 0) {
   }
 }
 
-const lmsCommitUrl = "https://3b10-2001-448a-4002-4f12-e4e4-5bd4-350e-e810.ngrok.io/api/scorm/data"
+const lmsCommitUrl =
+  "https://3b10-2001-448a-4002-4f12-e4e4-5bd4-350e-e810.ngrok.io/api/scorm/data";
 
 let settings = {
   logLevel: 4,
@@ -63,10 +64,9 @@ if (named === "1.2") {
 }
 
 const RenderIFrame = ({ userCourseData }) => {
-
-    useEffect(() => {
-        axios.defaults.headers.common["token"] = userCourseData.token
-    }, [userCourseData])
+  useEffect(() => {
+    axios.defaults.headers.common["token"] = userCourseData.token;
+  }, [userCourseData]);
 
   x.on("LMSInitialize", function () {
     const customEvent = new CustomEvent("postToLMS", {
@@ -87,15 +87,15 @@ const RenderIFrame = ({ userCourseData }) => {
     if (status === "incomplete") {
       // x.LMSSetValue("cmi.core.lesson_status", "completed")
     }
-    let data = x.LMSGetValue('cmi')
-    axios.post(lmsCommitUrl, {cmi: data}).then(res => {
-        console.log(res.data)
+    let data = x.LMSGetValue("cmi");
+    axios.post(lmsCommitUrl, { cmi: data }).then((res) => {
+      console.log(res.data);
     });
   });
 
   return (
-    <>
-      <h1>{userCourseData?.token}</h1>
+    <div>
+      <div>{userCourseData?.token}</div>
       <iframe
         name={scormType}
         style={{ height: "100%", width: "100%" }}
@@ -103,7 +103,7 @@ const RenderIFrame = ({ userCourseData }) => {
         frameBorder="0"
         title="scorm"
       />
-    </>
+    </div>
   );
 };
 
@@ -113,7 +113,7 @@ const RenderIFrame = ({ userCourseData }) => {
 // };
 
 function App() {
-  const [userCourseData, setUserCourseData] = useState(null);
+  const [userCourseData, setUserCourseData] = useState();
   // useEffect(() => {
   //     // const event = new Event('build')
   //     document.addEventListener("postToLMS", scormHandler)
@@ -126,7 +126,7 @@ function App() {
     function handleEvent(message) {
       setUserCourseData(message.data);
     }
-    
+
     document.addEventListener("message", handleEvent); // android
     // window.addEventListener("message", handleEvent); // ios
 
@@ -134,10 +134,10 @@ function App() {
   }, []);
   return (
     <div className="App">
-      {userCourseData && (userCourseData?.token == null || userCourseData?.user == null) ? (
-        <p>Loading...</p>
-      ) : (
+      {userCourseData?.token && userCourseData?.url ? (
         <RenderIFrame userCourseData={userCourseData} />
+      ) : (
+        <p>Loading</p>
       )}
     </div>
   );
