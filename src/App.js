@@ -3,7 +3,7 @@ import "scorm-again/dist/scorm12.js";
 import "scorm-again/dist/scorm2004.js";
 import "scorm-again/dist/aicc.js";
 import { useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 
 let scormType, named = ""
 let manifest=""
@@ -40,7 +40,7 @@ if (manifest.length > 0){
     }
 }
 
-const lmsCommitUrl = "http://localhost:4000/api/scorm/data"
+// const lmsCommitUrl = "http://localhost:4000/api/scorm/data"
 let settings = {
     logLevel: 4,
     // lmsCommitUrl: "http://localhost:4000/api/scorm/data",
@@ -63,15 +63,19 @@ if (named === "1.2") {
 
 
 const RenderIFrame = () => {
-
+    window.ReactNativeWebView.postMessage("awal")
+    // eslint-disable-next-line no-undef
+    window.ReactNativeWebView.postMessage(Scorm12API)
+    window.ReactNativeWebView.postMessage("akhir")
+    window.ReactNativeWebView.postMessage(x)
     x.on("LMSInitialize", function () {
         x.LMSSetValue("cmi.core.lesson_status", "not attempted")
-        window.ReactNativeWebView.postMessage("init LMS")
+        // window.ReactNativeWebView.postMessage("init LMS")
     });
 
     x.on("LMSSetValue.cmi.*", function(CMIElement, value) {
-        window.ReactNativeWebView.postMessage("LMS set value for ",CMIElement)
-        window.ReactNativeWebView.postMessage("value : ",value)
+        // window.ReactNativeWebView.postMessage("LMS set value for ",CMIElement)
+        // window.ReactNativeWebView.postMessage("value : ",value)
     });
 
     x.on("LMSFinish", function () {
@@ -79,10 +83,10 @@ const RenderIFrame = () => {
         if (status === "incomplete") {
             // x.LMSSetValue("cmi.core.lesson_status", "completed")
         }
-        let data = x.LMSGetValue('cmi')
-        axios.post(lmsCommitUrl, {cmi: data}).then(res => {
-            console.log(res.data)
-        });
+        // let data = x.LMSGetValue('cmi')
+        // axios.post(lmsCommitUrl, {cmi: data}).then(res => {
+        //     console.log(res.data)
+        // });
     });
 
     return (
@@ -91,7 +95,6 @@ const RenderIFrame = () => {
 }
 
 const RenderUser = ({user, setUser}) => {
-    window.ReactNativeWebView.postMessage("init user")
     const [name, setName] = useState("AdminPru")
     const [id, setId] = useState("Xasdfd2sagfF")
 
@@ -138,7 +141,6 @@ const RenderUser = ({user, setUser}) => {
 
 function App() {
     const [user, setUser] = useState(null)
-    window.ReactNativeWebView.postMessage("init app")
     return (
         <div className="App">
             {
