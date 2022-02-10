@@ -136,16 +136,18 @@ const RenderUser = ({user, setUser}) => {
     )
 }
 
+const scormHandler = (data) => {
+    window.ReactNativeWebView?.postMessage("LMS INITIALIZE JANCOOOK")  
+    window.ReactNativeWebView?.postMessage(data.detail)  
+}
+
 function App() {
     const [user, setUser] = useState(null)
     useEffect(() => {
         // const event = new Event('build')
-        document.addEventListener("postToLMS", (data) => {
-            window.ReactNativeWebView?.postMessage("LMS INITIALIZE JANCOOOK")  
-            window.ReactNativeWebView?.postMessage(data.detail)  
-        })
+        document.addEventListener("postToLMS", scormHandler)
         return () => {
-            document.removeEventListener("postToLMS")
+            document.removeEventListener("postToLMS", scormHandler)
         }
     }, [])
     return (
