@@ -80,7 +80,7 @@ const RenderIFrame = ({ userCourseData }) => {
     x.on("LMSFinish", function () {
       const status = x.LMSGetValue("cmi.core.lesson_status");
       if (status === "incomplete") {
-        x.LMSSetValue("cmi.core.lesson_status", "completed")
+        x.LMSSetValue("cmi.core.lesson_status", "completed");
       }
       let data = x.LMSGetValue("cmi").toJSON();
       const string_data = JSON.stringify(data);
@@ -88,6 +88,9 @@ const RenderIFrame = ({ userCourseData }) => {
       const customEvent = new CustomEvent("postToLMS", string_data);
       document.dispatchEvent(customEvent);
 
+      axios.post(lmsCommitUrl, { cmi: data }).then((res) => {
+        console.log(res.data);
+      });
     });
   }, [userCourseData]);
 
