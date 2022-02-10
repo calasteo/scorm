@@ -66,36 +66,33 @@ if (named === "1.2") {
 const RenderIFrame = ({ userCourseData }) => {
   useEffect(() => {
     axios.defaults.headers.common["token"] = userCourseData.token;
+
+    x.on("LMSInitialize", function () {
+      x.cmi.core.student_id = userCourseData.id;
+      x.cmi.core.student_name = userCourseData.name;
+      x.LMSSetValue("cmi.core.lesson_status", "not attempted");
+    });
+
+    // x.on("LMSSetValue.cmi.*", function (CMIElement, value) {
+
+    // });
+
+    x.on("LMSFinish", function () {
+      const status = x.LMSGetValue("cmi.core.lesson_status");
+      if (status === "incomplete") {
+        x.LMSSetValue("cmi.core.lesson_status", "completed")
+      }
+      let data = x.LMSGetValue("cmi").toJSON();
+      const string_data = JSON.stringify(data);
+
+      const customEvent = new CustomEvent("postToLMS", string_data);
+      document.dispatchEvent(customEvent);
+
+    });
   }, [userCourseData]);
 
-  x.on("LMSInitialize", function () {
-    const customEvent = new CustomEvent("postToLMS", {
-      detail: { name: "primary" },
-    });
-    document.dispatchEvent(customEvent);
-
-    x.LMSSetValue("cmi.core.lesson_status", "not attempted");
-  });
-
-  x.on("LMSSetValue.cmi.*", function (CMIElement, value) {
-    // window.ReactNativeWebView.postMessage("LMS set value for ",CMIElement)
-    // window.ReactNativeWebView.postMessage("value : ",value)
-  });
-
-  x.on("LMSFinish", function () {
-    const status = x.LMSGetValue("cmi.core.lesson_status");
-    if (status === "incomplete") {
-      // x.LMSSetValue("cmi.core.lesson_status", "completed")
-    }
-    let data = x.LMSGetValue("cmi");
-    axios.post(lmsCommitUrl, { cmi: data }).then((res) => {
-      console.log(res.data);
-    });
-  });
-
   return (
-    <div>
-      <div>{userCourseData?.token}</div>
+    <div style={{ width: "100%", height: "100vh" }}>
       <iframe
         name={scormType}
         style={{ height: "100%", width: "100%" }}
@@ -107,23 +104,24 @@ const RenderIFrame = ({ userCourseData }) => {
   );
 };
 
-// const scormHandler = (data) => {
-//   window.ReactNativeWebView?.postMessage("LMS INITIALIZE JANCOOOK");
-//   window.ReactNativeWebView?.postMessage(data.detail);
-// };
+const scormHandler = (data) => {
+  window.ReactNativeWebView?.postMessage("LMS INITIALIZE JANCOOOK");
+  window.ReactNativeWebView?.postMessage(data);
+};
 
 function App() {
   const [userCourseData, setUserCourseData] = useState();
-  // useEffect(() => {
-  //     // const event = new Event('build')
-  //     document.addEventListener("postToLMS", scormHandler)
-  //     return () => {
-  //         document.removeEventListener("postToLMS", scormHandler)
-  //     }
-  // }, [])
+  useEffect(() => {
+    // const event = new Event('build')
+    document.addEventListener("postToLMS", scormHandler);
+    return () => {
+      document.removeEventListener("postToLMS", scormHandler);
+    };
+  }, []);
   // listen events from react-native and trigger app status refetch
   useEffect(() => {
     function handleEvent(message) {
+      alert(message);
       setUserCourseData(JSON.parse(message.data));
     }
 
