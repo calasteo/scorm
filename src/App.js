@@ -66,7 +66,7 @@ const RenderIFrame = ({ userCourseData }) => {
 
     useEffect(() => {
         axios.defaults.headers.common["token"] = userCourseData.token
-    }, userCourseData)
+    }, [userCourseData])
 
   x.on("LMSInitialize", function () {
     const customEvent = new CustomEvent("postToLMS", {
