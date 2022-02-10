@@ -3,7 +3,7 @@ import "scorm-again/dist/scorm12.js";
 import "scorm-again/dist/scorm2004.js";
 import "scorm-again/dist/aicc.js";
 import { useEffect, useState } from "react";
-// import axios from "axios";
+import axios from "axios";
 
 let scormType,
   named = "";
@@ -41,7 +41,8 @@ if (manifest.length > 0) {
   }
 }
 
-// const lmsCommitUrl = "http://localhost:4000/api/scorm/data"
+const lmsCommitUrl = "https://3b10-2001-448a-4002-4f12-e4e4-5bd4-350e-e810.ngrok.io/api/scorm/data"
+
 let settings = {
   logLevel: 4,
   // lmsCommitUrl: "http://localhost:4000/api/scorm/data",
@@ -61,7 +62,12 @@ if (named === "1.2") {
   x = window.API_1484_11 = new Scorm2004API(settings);
 }
 
-const RenderIFrame = ({ user }) => {
+const RenderIFrame = ({ userCourseData }) => {
+
+    useEffect(() => {
+        axios.defaults.headers.common["token"] = userCourseData.token
+    }, userCourseData)
+
   x.on("LMSInitialize", function () {
     const customEvent = new CustomEvent("postToLMS", {
       detail: { name: "primary" },
@@ -81,10 +87,10 @@ const RenderIFrame = ({ user }) => {
     if (status === "incomplete") {
       // x.LMSSetValue("cmi.core.lesson_status", "completed")
     }
-    // let data = x.LMSGetValue('cmi')
-    // axios.post(lmsCommitUrl, {cmi: data}).then(res => {
-    //     console.log(res.data)
-    // });
+    let data = x.LMSGetValue('cmi')
+    axios.post(lmsCommitUrl, {cmi: data}).then(res => {
+        console.log(res.data)
+    });
   });
 
   return (
@@ -93,7 +99,7 @@ const RenderIFrame = ({ user }) => {
       <iframe
         name={scormType}
         style={{ height: "100%", width: "100%" }}
-        src={url}
+        src={userCourseData.url}
         frameBorder="0"
         title="scorm"
       />
@@ -162,7 +168,7 @@ const RenderUser = ({ user, setUser }) => {
 // };
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [userCourseData, setUserCourseData] = useState(null);
   // useEffect(() => {
   //     // const event = new Event('build')
   //     document.addEventListener("postToLMS", scormHandler)
@@ -173,21 +179,20 @@ function App() {
   // listen events from react-native and trigger app status refetch
   useEffect(() => {
     function handleEvent(message) {
-      setUser(message.data);
+      setUserCourseData(message.data);
     }
-
-    // This will only work for Android
-    // https://stackoverflow.com/a/58118984
-    document.addEventListener("message", handleEvent);
+    
+    document.addEventListener("message", handleEvent); // android
+    // window.addEventListener("message", handleEvent); // ios
 
     return () => document.removeEventListener("message", handleEvent);
   }, []);
   return (
     <div className="App">
-      {user == null ? (
-        <RenderUser user={user} setUser={setUser} />
+      {userCourseData == null ? (
+        <p>Loading...</p>
       ) : (
-        <RenderIFrame user={user} />
+        <RenderIFrame userCourseData={userCourseData} />
       )}
     </div>
   );
