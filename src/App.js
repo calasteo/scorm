@@ -153,10 +153,10 @@ const RenderUser = ({ user, setUser }) => {
   );
 };
 
-const scormHandler = (data) => {
-  window.ReactNativeWebView?.postMessage("LMS INITIALIZE JANCOOOK");
-  window.ReactNativeWebView?.postMessage(data.detail);
-};
+// const scormHandler = (data) => {
+//   window.ReactNativeWebView?.postMessage("LMS INITIALIZE JANCOOOK");
+//   window.ReactNativeWebView?.postMessage(data.detail);
+// };
 
 function App() {
   const [user, setUser] = useState(null);
