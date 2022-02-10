@@ -61,7 +61,7 @@ if (named === "1.2") {
   x = window.API_1484_11 = new Scorm2004API(settings);
 }
 
-const RenderIFrame = () => {
+const RenderIFrame = ({ user }) => {
   x.on("LMSInitialize", function () {
     const customEvent = new CustomEvent("postToLMS", {
       detail: { name: "primary" },
@@ -88,13 +88,16 @@ const RenderIFrame = () => {
   });
 
   return (
-    <iframe
-      name={scormType}
-      style={{ height: "100%", width: "100%" }}
-      src={url}
-      frameBorder="0"
-      title="scorm"
-    />
+    <>
+      <h1>{user}</h1>
+      <iframe
+        name={scormType}
+        style={{ height: "100%", width: "100%" }}
+        src={url}
+        frameBorder="0"
+        title="scorm"
+      />
+    </>
   );
 };
 
@@ -184,7 +187,7 @@ function App() {
       {user == null ? (
         <RenderUser user={user} setUser={setUser} />
       ) : (
-        <RenderIFrame />
+        <RenderIFrame user={user} />
       )}
     </div>
   );
