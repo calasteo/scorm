@@ -141,7 +141,8 @@ function App() {
     useEffect(() => {
         // const event = new Event('build')
         document.addEventListener("postToLMS", (data) => {
-            window.ReactNativeWebView?.postMessage(data)  
+            window.ReactNativeWebView?.postMessage("LMS INITIALIZE JANCOOOK")  
+            window.ReactNativeWebView?.postMessage(data.detail)  
         })
         return () => {
             document.removeEventListener("postToLMS")
