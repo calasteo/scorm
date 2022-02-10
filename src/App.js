@@ -134,7 +134,7 @@ function App() {
   }, []);
   return (
     <div className="App">
-      {userCourseData == null ? (
+      {userCourseData && userCourseData?.token == null || userCourseData?.user == null ? (
         <p>Loading...</p>
       ) : (
         <RenderIFrame userCourseData={userCourseData} />
