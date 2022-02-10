@@ -68,6 +68,10 @@ const RenderIFrame = () => {
     },[cmi])
     setCmi({init:false})
     x.on("LMSInitialize", function () {
+        
+        const customEvent = new CustomEvent('postToLMS', { detail: { name: 'primary' } });
+        document.dispatchEvent(customEvent);
+
         x.LMSSetValue("cmi.core.lesson_status", "not attempted")
         setCmi({init:true})
     });
@@ -142,6 +146,15 @@ const RenderUser = ({user, setUser}) => {
 
 function App() {
     const [user, setUser] = useState(null)
+    useEffect(() => {
+        // const event = new Event('build')
+        document.addEventListener("postToLMS", (data) => {
+            window.ReactNativeWebView?.postMessage(data)  
+        })
+        return () => {
+            document.removeEventListener("postToLMS")
+        }
+    }, [])
     return (
         <div className="App">
             {
