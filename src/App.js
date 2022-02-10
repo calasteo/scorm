@@ -11,7 +11,7 @@ let manifest = "";
 // let url = "/scorm/seq/index_scorm.html"
 // let manifest = "/scorm/seq/imsmanifest.xml"
 //
-let url = "/scorm/quiz/res/index.html";
+// let url = "/scorm/quiz/res/index.html";
 manifest = "/scorm/quiz/imsmanifest.xml";
 //
 // let url = "/scorm/360/index_lms.html"
