@@ -60,18 +60,13 @@ if (named === "1.2") {
     // eslint-disable-next-line no-undef
     x = window.API_1484_11 = new Scorm2004API(settings);
 }
+const RCTWeb =  window.ReactNativeWebView.postMessage("awal")
 
 
 const RenderIFrame = () => {
-    window.ReactNativeWebView.postMessage("awal")
-    // eslint-disable-next-line no-undef
-    window.ReactNativeWebView.postMessage(Scorm12API)
-    window.ReactNativeWebView.postMessage("akhir")
-    window.ReactNativeWebView.postMessage(x)
     x.on("LMSInitialize", function () {
         x.LMSSetValue("cmi.core.lesson_status", "not attempted")
-        alert("INIT")
-        // window.ReactNativeWebView.postMessage("init LMS")
+        RCTWeb.postMessage("WKWKWKKWKWKWKWKWKKW")
     });
 
     x.on("LMSSetValue.cmi.*", function(CMIElement, value) {
