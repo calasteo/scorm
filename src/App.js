@@ -95,7 +95,7 @@ const RenderIFrame = ({ userCourseData }) => {
 
   return (
     <>
-      <h1>{token}</h1>
+      <h1>{userCourseData?.token}</h1>
       <iframe
         name={scormType}
         style={{ height: "100%", width: "100%" }}
@@ -134,7 +134,7 @@ function App() {
   }, []);
   return (
     <div className="App">
-      {userCourseData && userCourseData?.token == null || userCourseData?.user == null ? (
+      {userCourseData && (userCourseData?.token == null || userCourseData?.user == null) ? (
         <p>Loading...</p>
       ) : (
         <RenderIFrame userCourseData={userCourseData} />
