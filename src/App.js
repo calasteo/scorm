@@ -95,15 +95,16 @@ const RenderIFrame = ({ userCourseData }) => {
   }, [userCourseData]);
 
   return (
-    <div style={{ width: "100%", height: "100vh" }}>
-      <iframe
+    <body style="margin:0px;padding:0px;overflow:hidden">
+        <iframe
         name={scormType}
-        style={{ height: "100%", width: "100%" }}
+        style={{ height: "100%", width: "100%" , overflow: "hidden" }}
         src={userCourseData.url}
         frameBorder="0"
         title="scorm"
+        height="100%" width="100%"
       />
-    </div>
+    </body>
   );
 };
 
