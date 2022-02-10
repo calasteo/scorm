@@ -95,7 +95,6 @@ const RenderIFrame = ({ userCourseData }) => {
   }, [userCourseData]);
 
   return (
-    <body style="margin:0px;padding:0px;overflow:hidden">
         <iframe
         name={scormType}
         style={{ height: "100%", width: "100%" , overflow: "hidden" }}
@@ -104,7 +103,6 @@ const RenderIFrame = ({ userCourseData }) => {
         title="scorm"
         height="100%" width="100%"
       />
-    </body>
   );
 };
 
