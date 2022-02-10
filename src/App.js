@@ -10,8 +10,8 @@ let manifest=""
 // let url = "/scorm/seq/index_scorm.html"
 // let manifest = "/scorm/seq/imsmanifest.xml"
 //
-// let url = "/scorm/quiz/res/index.html"
-//  manifest = "/scorm/quiz/imsmanifest.xml"
+let url = "/scorm/quiz/res/index.html"
+ manifest = "/scorm/quiz/imsmanifest.xml"
 //
 // let url = "/scorm/360/index_lms.html"
 //  manifest = "/scorm/360/imsmanifest.xml"
@@ -22,8 +22,8 @@ let manifest=""
 // let url = "/scorm/StopMoneyLaundering/index.html"
 //  manifest = "/scorm/360/imsmanifest.xml"
 
-let url = "https://files.staging.pawonmburi.com/files/learning_staging_(updated)/html5/7f7ba44f59b52315e6f2123fdfae0728/quiz/res/index.html"
-manifest = "https://files.staging.pawonmburi.com/files/learning_staging_(updated)/html5/7f7ba44f59b52315e6f2123fdfae0728/quiz/imsmanifest.xml"
+// let url = "https://files.staging.pawonmburi.com/files/learning_staging_(updated)/html5/7f7ba44f59b52315e6f2123fdfae0728/quiz/res/index.html"
+// manifest = "https://files.staging.pawonmburi.com/files/learning_staging_(updated)/html5/7f7ba44f59b52315e6f2123fdfae0728/quiz/imsmanifest.xml"
 
 if (manifest.length > 0){
     var request = new XMLHttpRequest();
