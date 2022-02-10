@@ -107,31 +107,31 @@ const RenderIFrame = ({ userCourseData }) => {
   );
 };
 
-const RenderUser = ({ user, setUser }) => {
-  const [name, setName] = useState("AdminPru");
-  const [id, setId] = useState("Xasdfd2sagfF");
+// const RenderUser = ({ user, setUser }) => {
+//   const [name, setName] = useState("AdminPru");
+//   const [id, setId] = useState("Xasdfd2sagfF");
 
-  function submitForm(e) {
-    let errors = [];
-    if (id === "") {
-      errors.push("ID wajib diisi");
-    }
-    if (name === "") {
-      errors.push("Name wajib diisi");
-    }
-    if (errors.length > 0) {
-      alert(errors.join(" | "));
-      return;
-    }
-    setUser({ id, name });
-    if (scormType === "API") {
-      x.cmi.core.student_id = id;
-      x.cmi.core.student_name = name;
-    } else {
-      x.cmi.learner_id = id;
-      x.cmi.student_name = name;
-    }
-  }
+//   function submitForm(e) {
+//     let errors = [];
+//     if (id === "") {
+//       errors.push("ID wajib diisi");
+//     }
+//     if (name === "") {
+//       errors.push("Name wajib diisi");
+//     }
+//     if (errors.length > 0) {
+//       alert(errors.join(" | "));
+//       return;
+//     }
+//     setUser({ id, name });
+//     if (scormType === "API") {
+//       x.cmi.core.student_id = id;
+//       x.cmi.core.student_name = name;
+//     } else {
+//       x.cmi.learner_id = id;
+//       x.cmi.student_name = name;
+//     }
+//   }
 
   return (
     <div className="form-user-karis">
