@@ -63,13 +63,15 @@ if (named === "1.2") {
 
 
 const RenderIFrame = () => {
-    window.ReactNativeWebView.postMessage("init iframe")
+
     x.on("LMSInitialize", function () {
         x.LMSSetValue("cmi.core.lesson_status", "not attempted")
+        window.ReactNativeWebView.postMessage("init LMS")
     });
 
     x.on("LMSSetValue.cmi.*", function(CMIElement, value) {
-
+        window.ReactNativeWebView.postMessage("LMS set value for ",CMIElement)
+        window.ReactNativeWebView.postMessage("value : ",value)
     });
 
     x.on("LMSFinish", function () {
