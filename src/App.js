@@ -2,7 +2,7 @@ import './App.css';
 import "scorm-again/dist/scorm12.js";
 import "scorm-again/dist/scorm2004.js";
 import "scorm-again/dist/aicc.js";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 // import axios from "axios";
 
 let scormType, named = ""
@@ -60,18 +60,23 @@ if (named === "1.2") {
     // eslint-disable-next-line no-undef
     x = window.API_1484_11 = new Scorm2004API(settings);
 }
-const RCTWeb =  window.ReactNativeWebView.postMessage("awal")
-
 
 const RenderIFrame = () => {
+    const [cmi,setCmi] = useState({})
+    useEffect(()=>{
+        window.ReactNativeWebView.postMessage(cmi)
+    },[cmi])
+    setCmi({init:false})
     x.on("LMSInitialize", function () {
         x.LMSSetValue("cmi.core.lesson_status", "not attempted")
-        RCTWeb.postMessage("WKWKWKKWKWKWKWKWKKW")
+        setCmi({init:true})
     });
 
     x.on("LMSSetValue.cmi.*", function(CMIElement, value) {
         // window.ReactNativeWebView.postMessage("LMS set value for ",CMIElement)
         // window.ReactNativeWebView.postMessage("value : ",value)
+        let data = x.LMSGetValue('cmi')
+        setCmi({init:true,cmi:data})
     });
 
     x.on("LMSFinish", function () {
