@@ -124,7 +124,7 @@ function App() {
   // listen events from react-native and trigger app status refetch
   useEffect(() => {
     function handleEvent(message) {
-      setUserCourseData(message.data);
+      setUserCourseData(JSON.parse(message.data));
     }
 
     document.addEventListener("message", handleEvent); // android
