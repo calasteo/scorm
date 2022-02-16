@@ -40,8 +40,9 @@ if (manifest.length > 0) {
     }
   }
 }
-const ngrok = "https://8ef0-2001-448a-4009-6c01-642d-65cf-61b4-a0c2.ngrok.io"
-const lmsCommitUrl =ngrok+"/api/scorm/data";
+
+const lmsCommitUrl =
+  "https://3b10-2001-448a-4002-4f12-e4e4-5bd4-350e-e810.ngrok.io/api/scorm/data";
 
 let settings = {
   logLevel: 4,
@@ -72,19 +73,9 @@ const RenderIFrame = ({ userCourseData }) => {
       x.LMSSetValue("cmi.core.lesson_status", "not attempted");
     });
 
-    x.on("LMSSetValue.cmi.*", function (CMIElement, value) {
-      if (CMIElement === "cmi.core.lesson_status") {
+    // x.on("LMSSetValue.cmi.*", function (CMIElement, value) {
 
-        let iframe = document.getElementById("scormPlayer")
-        var elmnt = iframe.contentWindow.document.querySelector(".component_container.exit div.tap_area");
-        if (elmnt) {
-          elmnt.addEventListener("touchend", function () {
-            x.LMSFinish()
-            iframe.setAttribute("src",userCourseData.finishUrl)
-          })
-        }
-      }
-    });
+    // });
 
     x.on("LMSFinish", function () {
       const status = x.LMSGetValue("cmi.core.lesson_status");
@@ -110,7 +101,6 @@ const RenderIFrame = ({ userCourseData }) => {
         src={userCourseData.url}
         frameBorder="0"
         title="scorm"
-        id="scormPlayer"
         height="100%" width="100%"
       />
   );
