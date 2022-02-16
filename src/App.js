@@ -3,15 +3,16 @@ import "scorm-again/dist/scorm12.js";
 import "scorm-again/dist/scorm2004.js";
 import "scorm-again/dist/aicc.js";
 import {useEffect, useState} from "react";
-// import axios from "axios";
+import axios from "axios";
 
 let scormType, named = ""
-let manifest=""
+let manifest = ""
 // let url = "/scorm/seq/index_scorm.html"
 // let manifest = "/scorm/seq/imsmanifest.xml"
 //
 let url = "/scorm/quiz/res/index.html"
- manifest = "/scorm/quiz/imsmanifest.xml"
+let finishUrl = "/scorm/quiz/res/data/goodbye.html"
+manifest = "/scorm/quiz/imsmanifest.xml"
 //
 // let url = "/scorm/360/index_lms.html"
 //  manifest = "/scorm/360/imsmanifest.xml"
@@ -25,7 +26,7 @@ let url = "/scorm/quiz/res/index.html"
 // let url = "https://files.staging.pawonmburi.com/files/learning_staging_(updated)/html5/7f7ba44f59b52315e6f2123fdfae0728/quiz/res/index.html"
 // manifest = "https://files.staging.pawonmburi.com/files/learning_staging_(updated)/html5/7f7ba44f59b52315e6f2123fdfae0728/quiz/imsmanifest.xml"
 
-if (manifest.length > 0){
+if (manifest.length > 0) {
     var request = new XMLHttpRequest();
     request.open("GET", manifest, false);
     request.send();
@@ -40,10 +41,10 @@ if (manifest.length > 0){
     }
 }
 
-// const lmsCommitUrl = "http://localhost:4000/api/scorm/data"
+const lmsCommitUrl = "http://localhost:8080/api/scorm/data"
 let settings = {
     logLevel: 4,
-    // lmsCommitUrl: "http://localhost:4000/api/scorm/data",
+    // lmsCommitUrl: lmsCommitUrl,
     mastery_override: true,
     selfReportSessionTime: true,
     alwaysSendTotalTime: true,
@@ -62,39 +63,46 @@ if (named === "1.2") {
 }
 
 const RenderIFrame = () => {
-    const[cmi,setCMI] = useState({})
-    useEffect(()=>{
-        alert(cmi)
-        window.ReactNativeWebView.postMessage(cmi)
-    },[x,cmi])
+    const [suspendData, setSuspendData] = useState('')
     x.on("LMSInitialize", function () {
-        const customEvent = new CustomEvent('postToLMS', { detail: { name: 'primary' } });
-        document.dispatchEvent(customEvent);
         x.LMSSetValue("cmi.core.lesson_status", "not attempted")
         x.LMSSetValue("cmi.core.student_id", "12313")
         x.LMSSetValue("cmi.core.student_name", "AdminPRU")
+
     });
-    x.on("LMSSetValue.cmi.*", function(CMIElement, value) {
-        // window.ReactNativeWebView.postMessage("LMS set value for ",CMIElement)
-        // window.ReactNativeWebView.postMessage("value : ",value)
+
+    x.on("LMSSetValue.cmi.*", function (CMIElement, value) {
+        if (CMIElement === "cmi.core.lesson_status") {
+
+            let iframe = document.getElementById("scormPlayer")
+            var elmnt = iframe.contentWindow.document.querySelector(".component_container.exit div.tap_area");
+            if (elmnt) {
+                elmnt.addEventListener("touchend", function () {
+                    x.LMSFinish()
+                    iframe.setAttribute("src",finishUrl)
+                })
+            }
+        }
+
     });
+
     x.on("LMSFinish", function () {
-        const status =x.LMSGetValue("cmi.core.lesson_status")
+        const status = x.LMSGetValue("cmi.core.lesson_status")
         if (status === "incomplete") {
-            // x.LMSSetValue("cmi.core.lesson_status", "completed")
+            x.LMSSetValue("cmi.core.lesson_status", "completed")
         }
 
         let data = x.LMSGetValue('cmi').toJSON()
-        setCMI(data)
-        // axios.post(lmsCommitUrl, {cmi: data}).then(res => {
-        //     console.log(res.data)
-        // });
+        axios.post(lmsCommitUrl,{cmi:data}).then(function (res){
+            console.log(res.data)
+        })
     });
-
-
+    useEffect(() => {
+    }, [suspendData])
 
     return (
-        <iframe name={ scormType } style={ {height: "100%", width: "100%"} } src={ url } frameBorder="0" title="scorm"/>
+        <iframe name={scormType} style={{height: "100%", width: "100%"}} src={url} frameBorder="0" title="scorm"
+                id={"scormPlayer"}/>
     )
 }
 
@@ -154,10 +162,12 @@ function App() {
     //         document.removeEventListener("postToLMS")
     //     }
     // }, [])
+
+
     return (
         <div className="App">
             {
-               <RenderIFrame/>
+                <RenderIFrame/>
             }
         </div>
     );
