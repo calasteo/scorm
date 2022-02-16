@@ -41,64 +41,74 @@ if (manifest.length > 0) {
   }
 }
 
-const lmsCommitUrl =
-  "https://3b10-2001-448a-4002-4f12-e4e4-5bd4-350e-e810.ngrok.io/api/scorm/data";
-
-let settings = {
-  logLevel: 4,
-  // lmsCommitUrl: "http://localhost:4000/api/scorm/data",
-  mastery_override: true,
-  selfReportSessionTime: true,
-  alwaysSendTotalTime: true,
-  autocommit: false,
-};
-let x;
-if (named === "1.2") {
-  scormType = "API";
-  // eslint-disable-next-line no-undef
-  x = window.API = new Scorm12API(settings);
-} else {
-  scormType = "API_1484_11";
-  // eslint-disable-next-line no-undef
-  x = window.API_1484_11 = new Scorm2004API(settings);
-}
-
 const RenderIFrame = ({ userCourseData }) => {
-
-  const customEvent = new CustomEvent("postToLMS", {detail: {
-    content: JSON.stringify(userCourseData)
-  }});
+  const customEvent = new CustomEvent("postToLMS", {
+    detail: {
+      content: JSON.stringify(userCourseData),
+    },
+  });
   document.dispatchEvent(customEvent);
 
   useEffect(() => {
+    const lmsCommitUrl =
+      "https://3b10-2001-448a-4002-4f12-e4e4-5bd4-350e-e810.ngrok.io/api/scorm/data";
+
+    let settings = {
+      logLevel: 4,
+      // lmsCommitUrl: "http://localhost:4000/api/scorm/data",
+      mastery_override: true,
+      selfReportSessionTime: true,
+      alwaysSendTotalTime: true,
+      autocommit: false,
+    };
+    let x;
+    if (named === "1.2") {
+      scormType = "API";
+      // eslint-disable-next-line no-undef
+      x = window.API = new Scorm12API(settings);
+    } else {
+      scormType = "API_1484_11";
+      // eslint-disable-next-line no-undef
+      x = window.API_1484_11 = new Scorm2004API(settings);
+    }
+
+    // x.LMSInitialize()
+
     axios.defaults.headers.common["token"] = userCourseData.token;
 
-    alert("USEFX")
+    alert("USEFX");
 
-    const customEvent = new CustomEvent("postToLMS", {detail: {
-      content: "CDM EVENT"
-    }});
+    const customEvent = new CustomEvent("postToLMS", {
+      detail: {
+        content: "CDM EVENT",
+      },
+    });
     document.dispatchEvent(customEvent);
-  
 
-    axios.post("https://f848-2001-448a-4009-6c01-e87e-9315-1318-9581.ngrok.io",{data: "CDM INITIALIZE"})
+    axios.post(
+      "https://f848-2001-448a-4009-6c01-e87e-9315-1318-9581.ngrok.io",
+      { data: "CDM INITIALIZE" }
+    );
 
     x.on("LMSInitialize", function () {
       x.cmi.core.student_id = userCourseData.id;
       x.cmi.core.student_name = userCourseData.name;
       x.LMSSetValue("cmi.core.lesson_status", "not attempted");
 
-      const customEvent = new CustomEvent("postToLMS", {detail: {
-        content: "plsssss ini pas lms initialize API"
-      }});
+      const customEvent = new CustomEvent("postToLMS", {
+        detail: {
+          content: "plsssss ini pas lms initialize API",
+        },
+      });
       document.dispatchEvent(customEvent);
-      
-      axios.post("https://f848-2001-448a-4009-6c01-e87e-9315-1318-9581.ngrok.io", {data : "LMS ON INITIALIZE"})
-      alert("LMS INIT")
+
+      axios.post(
+        "https://f848-2001-448a-4009-6c01-e87e-9315-1318-9581.ngrok.io",
+        { data: "LMS ON INITIALIZE" }
+      );
+      alert("LMS INIT");
       // const customEvent = new CustomEvent("postToLMS", {detail: {content: {file: "json"}}});
       // document.dispatchEvent(customEvent);
-
-
     });
 
     // x.on("LMSSetValue.cmi.*", function (CMIElement, value) {
@@ -113,7 +123,9 @@ const RenderIFrame = ({ userCourseData }) => {
       let data = x.LMSGetValue("cmi").toJSON();
       const string_data = JSON.stringify(data);
 
-      const customEvent = new CustomEvent("postToLMS", {detail: {content: string_data}});
+      const customEvent = new CustomEvent("postToLMS", {
+        detail: { content: string_data },
+      });
       document.dispatchEvent(customEvent);
 
       axios.post(lmsCommitUrl, { cmi: data }).then((res) => {
@@ -123,20 +135,23 @@ const RenderIFrame = ({ userCourseData }) => {
   }, [userCourseData]);
 
   return (
-        <iframe
-        name={scormType}
-        style={{ height: "100%", width: "100%" , overflow: "hidden" }}
-        src={userCourseData.url}
-        frameBorder="0"
-        title="scorm"
-        height="100%" width="100%"
-      />
+    <iframe
+      name={scormType}
+      style={{ height: "100%", width: "100%", overflow: "hidden" }}
+      src={userCourseData.url}
+      frameBorder="0"
+      title="scorm"
+      height="100%"
+      width="100%"
+    />
   );
 };
 
 const scormHandler = (data = {}) => {
   window.ReactNativeWebView?.postMessage("LMS INITIALIZE JANCOOOK");
-  window.ReactNativeWebView?.postMessage(JSON.stringify(data?.detail?.content ? data?.detail?.content : {} ));
+  window.ReactNativeWebView?.postMessage(
+    JSON.stringify(data?.detail?.content ? data?.detail?.content : {})
+  );
 };
 
 function App() {
@@ -162,13 +177,13 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const customEvent = new CustomEvent("postToLMS", {detail: {
-      content: "plsssss ini pas component did mount"
-    }});
+    const customEvent = new CustomEvent("postToLMS", {
+      detail: {
+        content: "plsssss ini pas component did mount",
+      },
+    });
     document.dispatchEvent(customEvent);
-  }
-  , [])
-
+  }, []);
 
   return (
     <div className="App">
