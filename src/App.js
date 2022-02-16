@@ -109,6 +109,8 @@ axios.post(lmsCommitUrl, { cmi: data }).then((res) => {
 });
 });
 
+x.LMSInitialize()
+
 const RenderIFrame = ({ userCourseData }) => {
   const customEvent = new CustomEvent("postToLMS", {
     detail: {
