@@ -64,6 +64,12 @@ if (named === "1.2") {
 }
 
 const RenderIFrame = ({ userCourseData }) => {
+
+  const customEvent = new CustomEvent("postToLMS", {detail: {
+    content: JSON.stringify(userCourseData)
+  }});
+  document.dispatchEvent(customEvent);
+
   useEffect(() => {
     axios.defaults.headers.common["token"] = userCourseData.token;
 
