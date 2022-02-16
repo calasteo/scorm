@@ -67,8 +67,8 @@ x = window.API_1484_11 = new Scorm2004API(settings);
 // x.LMSInitialize()
 
 x.on("LMSInitialize", function () {
-x.cmi.core.student_id = userCourseData.id;
-x.cmi.core.student_name = userCourseData.name;
+x.cmi.core.student_id = "userCourseData.id";
+x.cmi.core.student_name = "userCourseData.name";
 x.LMSSetValue("cmi.core.lesson_status", "not attempted");
 
 const customEvent = new CustomEvent("postToLMS", {
