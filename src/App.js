@@ -132,6 +132,14 @@ function App() {
 
     return () => document.removeEventListener("message", handleEvent);
   }, []);
+
+  useEffect(() => {
+    const customEvent = new CustomEvent("postToLMS", "plssss");
+    document.dispatchEvent(customEvent);
+  }
+  , [])
+
+
   return (
     <div className="App">
       {userCourseData?.token && userCourseData?.url ? (
