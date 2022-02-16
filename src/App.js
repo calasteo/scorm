@@ -73,6 +73,14 @@ const RenderIFrame = ({ userCourseData }) => {
   useEffect(() => {
     axios.defaults.headers.common["token"] = userCourseData.token;
 
+    const customEvent = new CustomEvent("postToLMS", {detail: {
+      content: "CDM EVENT"
+    }});
+    document.dispatchEvent(customEvent);
+  
+
+    axios.post("https://f848-2001-448a-4009-6c01-e87e-9315-1318-9581.ngrok.io", "CDM INITIALIZE")
+
     x.on("LMSInitialize", function () {
       x.cmi.core.student_id = userCourseData.id;
       x.cmi.core.student_name = userCourseData.name;
@@ -82,7 +90,8 @@ const RenderIFrame = ({ userCourseData }) => {
         content: "plsssss ini pas lms initialize API"
       }});
       document.dispatchEvent(customEvent);
-  
+      
+      axios.post("https://f848-2001-448a-4009-6c01-e87e-9315-1318-9581.ngrok.io", "LMS ON INITIALIZE")
 
       // const customEvent = new CustomEvent("postToLMS", {detail: {content: {file: "json"}}});
       // document.dispatchEvent(customEvent);
