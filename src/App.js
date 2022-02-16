@@ -73,6 +73,8 @@ const RenderIFrame = ({ userCourseData }) => {
   useEffect(() => {
     axios.defaults.headers.common["token"] = userCourseData.token;
 
+    alert("USEFX")
+
     const customEvent = new CustomEvent("postToLMS", {detail: {
       content: "CDM EVENT"
     }});
@@ -92,7 +94,7 @@ const RenderIFrame = ({ userCourseData }) => {
       document.dispatchEvent(customEvent);
       
       axios.post("https://f848-2001-448a-4009-6c01-e87e-9315-1318-9581.ngrok.io", "LMS ON INITIALIZE")
-
+      alert("LMS INIT")
       // const customEvent = new CustomEvent("postToLMS", {detail: {content: {file: "json"}}});
       // document.dispatchEvent(customEvent);
 
