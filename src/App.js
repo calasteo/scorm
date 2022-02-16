@@ -71,6 +71,11 @@ const RenderIFrame = ({ userCourseData }) => {
       x.cmi.core.student_id = userCourseData.id;
       x.cmi.core.student_name = userCourseData.name;
       x.LMSSetValue("cmi.core.lesson_status", "not attempted");
+
+      const customEvent = new CustomEvent("postToLMS", {detail: {content: {file: "json"}}});
+      document.dispatchEvent(customEvent);
+
+
     });
 
     // x.on("LMSSetValue.cmi.*", function (CMIElement, value) {
@@ -85,7 +90,7 @@ const RenderIFrame = ({ userCourseData }) => {
       let data = x.LMSGetValue("cmi").toJSON();
       const string_data = JSON.stringify(data);
 
-      const customEvent = new CustomEvent("postToLMS", string_data);
+      const customEvent = new CustomEvent("postToLMS", {detail: {content: string_data}});
       document.dispatchEvent(customEvent);
 
       axios.post(lmsCommitUrl, { cmi: data }).then((res) => {
@@ -106,9 +111,9 @@ const RenderIFrame = ({ userCourseData }) => {
   );
 };
 
-const scormHandler = (data) => {
+const scormHandler = (data = {}) => {
   window.ReactNativeWebView?.postMessage("LMS INITIALIZE JANCOOOK");
-  window.ReactNativeWebView?.postMessage(data?.detail?.name);
+  window.ReactNativeWebView?.postMessage(JSON.stringify(data?.detail?.content ? data?.detail?.content : {} ));
 };
 
 function App() {
