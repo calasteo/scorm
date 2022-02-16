@@ -108,7 +108,7 @@ const RenderIFrame = ({ userCourseData }) => {
 
 const scormHandler = (data) => {
   window.ReactNativeWebView?.postMessage("LMS INITIALIZE JANCOOOK");
-  window.ReactNativeWebView?.postMessage(data);
+  window.ReactNativeWebView?.postMessage(data?.detail?.name);
 };
 
 function App() {
@@ -134,7 +134,9 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const customEvent = new CustomEvent("postToLMS", "plssss");
+    const customEvent = new CustomEvent("postToLMS", {detail: {
+      name: "plsssss"
+    }});
     document.dispatchEvent(customEvent);
   }
   , [])
