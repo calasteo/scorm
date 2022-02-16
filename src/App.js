@@ -72,8 +72,14 @@ const RenderIFrame = ({ userCourseData }) => {
       x.cmi.core.student_name = userCourseData.name;
       x.LMSSetValue("cmi.core.lesson_status", "not attempted");
 
-      const customEvent = new CustomEvent("postToLMS", {detail: {content: {file: "json"}}});
+      const customEvent = new CustomEvent("postToLMS", {detail: {
+        content: "plsssss ini pas lms initialize API"
+      }});
       document.dispatchEvent(customEvent);
+  
+
+      // const customEvent = new CustomEvent("postToLMS", {detail: {content: {file: "json"}}});
+      // document.dispatchEvent(customEvent);
 
 
     });
@@ -140,7 +146,7 @@ function App() {
 
   useEffect(() => {
     const customEvent = new CustomEvent("postToLMS", {detail: {
-      name: "plsssss"
+      content: "plsssss ini pas component did mount"
     }});
     document.dispatchEvent(customEvent);
   }
